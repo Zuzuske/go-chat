@@ -17,7 +17,7 @@ var (
 )
 
 func ChatServiceUpgradeToWSConnection(w http.ResponseWriter, r *http.Request) {
-	ws, err := upgrader.Upgrade(w, r, nil)
+	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		fmt.Println("Could not upgrade to websocket")
 		return
@@ -27,13 +27,13 @@ func ChatServiceUpgradeToWSConnection(w http.ResponseWriter, r *http.Request) {
 		if err := ws.Close(); err != nil {
 			fmt.Println(err)
 		}
-	}(ws)
+	}(conn)
 
-	clients[ws] = true
+	clients[conn] = true
 
-	loadChatHistory(ws)
+	loadChatHistory(conn)
 
-	messageSender(ws)
+	messageSender(conn)
 }
 
 func messageSender(conn *websocket.Conn) {
