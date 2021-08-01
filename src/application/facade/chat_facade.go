@@ -6,5 +6,5 @@ import (
 )
 
 func UpgradeToWSConnection(w http.ResponseWriter, r *http.Request) {
-	service.ChatServiceUpgradeToWSConnection(w, r)
+	service.UpgradeToWSConnection(w, r)
 }

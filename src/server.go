@@ -9,20 +9,17 @@ import (
 	"os"
 )
 
-func init() {
-	configuration.LoadEnvironmentConfiguration()
-}
-
 var (
 	port = os.Getenv("PORT")
 )
 
 func main() {
+	configuration.LoadEnvironmentConfiguration()
 	controller.RegisterControllers()
+
 	go service.MessageReceiver()
 
 	log.Print("Server starting @ localhost:" + port)
-
 	if err := http.ListenAndServe(":"+port, nil); err != nil {
 		log.Fatal("Couldn't start server")
 	}

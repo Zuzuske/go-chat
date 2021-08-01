@@ -6,10 +6,6 @@ import (
 	"os"
 )
 
-func init() {
-	LoadEnvironmentConfiguration()
-}
-
 func NewRedisClient() *redis.Client {
 	url := os.Getenv("REDIS")
 
@@ -19,6 +15,11 @@ func NewRedisClient() *redis.Client {
 	}
 
 	client := redis.NewClient(opt)
+
+	_, redisError := client.Ping().Result()
+	if redisError != nil {
+		log.Fatal("Could not connect to redis")
+	}
 
 	return client
 }
