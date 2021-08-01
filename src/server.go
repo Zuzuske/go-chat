@@ -22,6 +22,6 @@ func main() {
 	log.Print("Server starting @ localhost:" + port)
 
 	if err := http.ListenAndServe(":"+port, nil); err != nil {
-		log.Fatal(err)
+		log.Fatal("Couldn't start server")
 	}
 }

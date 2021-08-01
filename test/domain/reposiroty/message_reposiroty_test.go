@@ -32,7 +32,7 @@ func TestMain(m *testing.M) {
 	os.Exit(code)
 }
 
-func TestWhenSavingMessageIfRepositoryDoesNotReturnErrorAndSavesMessage(t *testing.T) {
+func TestWhenSavingMessageAssertIfRepositoryDoesNotReturnErrorAndSavesMessage(t *testing.T) {
 	client.Del(key)
 
 	repo := repository.NewMessageRepository(client)
@@ -45,12 +45,11 @@ func TestWhenSavingMessageIfRepositoryDoesNotReturnErrorAndSavesMessage(t *testi
 	assert.Equal(t, mockMessage(), message)
 }
 
-func TestWhenFindingLast50MessagesRepositoryReturnsUpTo50Messages(t *testing.T) {
+func TestWhenFindingLast50MessagesAssertIfRepositoryDoesNotReturnErrorAndReturnsUpTo50Messages(t *testing.T) {
 	client.Del(key)
 
 	firstRun := 25
 	secondRun := 80
-
 	expected := 50
 
 	repo := repository.NewMessageRepository(client)
@@ -59,14 +58,16 @@ func TestWhenFindingLast50MessagesRepositoryReturnsUpTo50Messages(t *testing.T) 
 		repo.Save(mockMessage())
 	}
 
-	messages := repo.FindLast50Messages()
+	messages, err := repo.FindLast50Messages()
+	assert.Equal(t, nil, err)
 	assert.Equal(t, firstRun, len(messages))
 
 	for i := 0; i < secondRun; i++ {
 		repo.Save(mockMessage())
 	}
 
-	messages = repo.FindLast50Messages()
+	messages, err = repo.FindLast50Messages()
+	assert.Equal(t, nil, err)
 	assert.Equal(t, expected, len(messages))
 }
 

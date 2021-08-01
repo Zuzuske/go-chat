@@ -1,7 +1,6 @@
 package service
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/gorilla/websocket"
 	"go-chat/src/application/configuration"
@@ -55,16 +54,15 @@ func messageSender(conn *websocket.Conn) {
 	}
 }
 
-func loadChatHistory(ws *websocket.Conn) {
-	chatMessages := messageRepository.FindLast50Messages()
+func loadChatHistory(conn *websocket.Conn) {
+	messages, err := messageRepository.FindLast50Messages()
 
-	for _, chatMessage := range chatMessages {
-		var message model.Message
+	if err != nil {
+		return
+	}
 
-		if err := json.Unmarshal([]byte(chatMessage), &message); err != nil {
-			fmt.Println("Could not pare data to message")
-		}
-		sendMessage(ws, message)
+	for _, message := range messages {
+		sendMessage(conn, message)
 	}
 }
 
@@ -80,7 +78,7 @@ func messageReceiver() {
 func saveMessage(message model.Message) {
 	_, err := messageRepository.Save(message)
 	if err != nil {
-		return 
+		return
 	}
 }
 
