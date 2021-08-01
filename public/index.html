@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Chat</title>
+    <style>
+        button {
+            width: 90px;
+        }
+
+        #chat {
+            display: flex;
+        }
+
+        #messages {
+            background: #F0F8FF;
+            width: 350px;
+            height: 200px;
+            overflow-y: scroll;
+        }
+
+        #content {
+            width: 248px;
+        }
+
+        .message {
+            font-family: 'Poppins', sans-serif;
+            background: honeydew;
+            text-align: left;
+        }
+    </style>
+    <script type="text/javascript">
+    </script>
+</head>
+<body>
+<div>
+    <div>
+        <input id="username" name="username" type="text" placeholder="username"/>
+    </div>
+    <p></p>
+    <div id="chat">
+        <div id="conversation">
+            <div id="messages">
+            </div>
+            <p></p>
+            <input id="content" type="text" placeholder="Aa"/>
+            <button id="sendMessage" onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="script.js"></script>
+</html>
