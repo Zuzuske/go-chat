@@ -3,6 +3,7 @@ package main
 import (
 	"go-chat/src/application/configuration"
 	"go-chat/src/application/controller"
+	"go-chat/src/domain/service"
 	"log"
 	"net/http"
 	"os"
@@ -18,6 +19,7 @@ var (
 
 func main() {
 	controller.RegisterControllers()
+	go service.MessageReceiver()
 
 	log.Print("Server starting @ localhost:" + port)
 

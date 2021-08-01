@@ -5,6 +5,6 @@ import (
 	"net/http"
 )
 
-func UpgradeToWSConnection(w http.ResponseWriter, r *http.Request)  {
-	service.ChatServiceUpgrade(w, r)
+func UpgradeToWSConnection(w http.ResponseWriter, r *http.Request) {
+	service.ChatServiceUpgradeToWSConnection(w, r)
 }

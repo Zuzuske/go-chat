@@ -11,15 +11,12 @@ import (
 
 var (
 	messageRepository = repository.NewMessageRepository(configuration.NewRedisClient())
-
-	clients = make(map[*websocket.Conn]bool)
-
-	broadcaster = make(chan model.Message)
-
-	upgrader = websocket.Upgrader{CheckOrigin: func(r *http.Request) bool { return true }}
+	clients           = make(map[*websocket.Conn]bool)
+	broadcaster       = make(chan model.Message)
+	upgrader          = websocket.Upgrader{CheckOrigin: func(r *http.Request) bool { return true }}
 )
 
-func ChatServiceUpgrade(w http.ResponseWriter, r *http.Request) {
+func ChatServiceUpgradeToWSConnection(w http.ResponseWriter, r *http.Request) {
 	ws, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		fmt.Println("Could not upgrade to websocket")
@@ -35,8 +32,6 @@ func ChatServiceUpgrade(w http.ResponseWriter, r *http.Request) {
 	clients[ws] = true
 
 	loadChatHistory(ws)
-
-	go messageReceiver()
 
 	messageSender(ws)
 }
@@ -66,7 +61,7 @@ func loadChatHistory(conn *websocket.Conn) {
 	}
 }
 
-func messageReceiver() {
+func MessageReceiver() {
 	for {
 		message := <-broadcaster
 
